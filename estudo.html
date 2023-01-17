@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da velha</title>
+    <style>
+        .jogo{
+    width:603px;
+    height:600px;
+    border:solid 3px;
+    margin:auto;
+   
+    }
+    
+    .linha{
+        height:200px;
+        border-bottom:solid 1px;
+    }
+    
+    .casa{
+        width:200px;
+        height:100%;
+        border-right:solid 1px;
+        float:left;
+    }
+
+    </style>
+</head>
+<body>
+    <div class="jogo">
+        <div class="linha">
+            <div class="casa" id="casa1" value="1" onclick="teste(this.value)">1</div>
+            <div class="casa" id="casa2" value="2" onclick="teste(this.value)">2</div>
+            <div class="casa" id="casa3" value="3" onclick="teste(this.value)">3</div>
+        </div>
+        <div class="linha">
+            <div class="casa" id="casa4" value="4" onclick="teste(this.value)">4</div>
+            <div class="casa" id="casa5" value="5" onclick="teste(this.value)">5</div>
+            <div class="casa" id="casa6" value="6" onclick="teste(this.value)">6</div>
+        </div>
+        <div class="linha">
+            <div class="casa" id="casa7" value="7" onclick="teste(this.value)">7</div>
+            <div class="casa" id="casa8" value="8" onclick="teste(this.value)">8</div>
+            <div class="casa" id="casa9" value="9" onclick="teste(this.value)">9</div>
+        </div>
+    </div>
+    <script>
+ for (let index = 1; index < 9; index++) {
+    document.getElementById('casa'+index).value = index;
+ }
+        function teste(casa){
+            console.log(casa)
+            
+        }
+    </script>
+</body>
+</html>
