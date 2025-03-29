@@ -165,7 +165,7 @@
     const marcaCasa = (casa) =>{
         const elemento = document.querySelector(`#${casa}`);
 
-        if(elemento.innerText) return false;
+        if(elemento.dataset.jogador) return false;
 
         elemento.innerText = jogador;
         elemento.dataset.jogador = jogador;
@@ -175,6 +175,7 @@
 
     const desativaCasa = (casa) =>{
         const elemento = document.querySelector(`#${casa}`);
+        elemento.dataset.jogador = 'Blocked';
         elemento.style.cursor = "not-allowed";
     }
 
