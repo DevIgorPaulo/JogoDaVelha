@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Velha</title>
+    <style>
+
+        :root{
+            --border: solid 5px black;
+        }
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 25px;
+            font-weight: bolder;
+        }
+
+        body{
+            background-color: #D7D3D2;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .container{
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        h1{
+            background-color: #02ABC0;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 50px;
+            text-align: center;
+        }
+
+        #btn-restart{
+            margin-top: 25px;
+            padding: 25px;
+            background-color: #1DB080;
+            border-radius: 5px;
+            cursor: pointer;
+            visibility: hidden;
+        }
+
+        main{       
+            display: grid;
+            grid-template-columns: repeat(3, 150px);
+            grid-template-rows: repeat(3, 150px);
+            margin: auto;
+        }
+
+        .casa{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        #casa-1{
+            border-right: var(--border);
+            border-bottom: var(--border);
+        }
+        #casa-2{
+            border-bottom: var(--border);
+        }
+        #casa-3{
+            border-left: var(--border);
+            border-bottom: var(--border);
+        }
+        #casa-4{
+            border-right: var(--border);
+            border-bottom: var(--border);
+        }
+        #casa-5{
+            border-bottom: var(--border);
+        }
+        #casa-6{
+            border-left: var(--border);
+            border-bottom: var(--border);
+        }
+        #casa-7{
+            border-right: var(--border);
+        }
+        #casa-9{
+            border-left: var(--border);
+        }
+
+        button{
+            border: none;
+            height: 100%;
+            width: 100%;
+        }
+
+        @media screen and (max-width: 481px) {
+            main{       
+                grid-template-columns: repeat(3, 100px);
+                grid-template-rows: repeat(3, 100px);
+            }
+
+        }
+
+        @media screen and (max-width: 308px) {
+            main{       
+                grid-template-columns: repeat(3, 50px);
+                grid-template-rows: repeat(3, 50px);
+            }
+
+        }
+    </style>
+</head>
+<body>
+    <!-- <div class="fireworks-2"></div> -->
+
+    <div class="container">
+        <h1 id="mensagens"></h1>
+        <main>
+            <div class="casa" id="casa-1" data-jogador="" onclick="marcaCasa(this.id)"></div>
+            <div class="casa" id="casa-2" data-jogador="" onclick="marcaCasa(this.id)"></div>
+            <div class="casa" id="casa-3" data-jogador="" onclick="marcaCasa(this.id)"></div>
+            <div class="casa" id="casa-4" data-jogador="" onclick="marcaCasa(this.id)"></div>
+            <div class="casa" id="casa-5" data-jogador="" onclick="marcaCasa(this.id)"></div>
+            <div class="casa" id="casa-6" data-jogador="" onclick="marcaCasa(this.id)"></div>
+            <div class="casa" id="casa-7" data-jogador="" onclick="marcaCasa(this.id)"></div>
+            <div class="casa" id="casa-8" data-jogador="" onclick="marcaCasa(this.id)"></div>
+            <div class="casa" id="casa-9" data-jogador="" onclick="marcaCasa(this.id)"></div>
+        </main>
+        <button id="btn-restart" onclick="reiniciarJogo()">Reiniciar</button>
+    </div>
+    
+    <!-- <div class="fireworks"></div> -->
+</body>
+<script>
+ 
+  
+
+    let jogador = "X";
+
+    document.addEventListener("DOMContentLoaded", () => mostraJogador());
+
+    const mostraJogador = () => {
+        document.querySelector("#mensagens").innerText = `É vez do Jogador: ${jogador}`;
+    };
+
+    const trocaJogador = () =>{
+        jogador = jogador === "X" ? "O" : "X";
+
+        mostraJogador();
+    }
+
+    const marcaCasa = (casa) =>{
+        const elemento = document.querySelector(`#${casa}`);
+
+        if(elemento.innerText) return false;
+
+        elemento.innerText = jogador;
+        elemento.dataset.jogador = jogador;
+        desativaCasa(casa);
+        verificaGanhador();
+    }
+
+    const desativaCasa = (casa) =>{
+        const elemento = document.querySelector(`#${casa}`);
+        elemento.style.cursor = "not-allowed";
+    }
+
+    const ativaCasa = (casa) =>{
+        const elemento = document.querySelector(`#${casa}`);
+
+        elemento.innerText = '';
+        elemento.dataset.jogador = '';
+        elemento.style.cursor = "pointer";
+    }
+
+    const verificaGanhador = () =>{
+        const casas = Array.from({ length: 9 }, (_, i) => document.querySelector(`#casa-${i + 1}`).dataset.jogador || "");
+
+        const combinacoes = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],
+            [0, 3, 6], [1, 4, 7], [2, 5, 8], 
+            [0, 4, 8], [2, 4, 6]            
+        ];
+
+        for (const [a, b, c] of combinacoes) {
+            if (casas[a] && casas[a] === casas[b] && casas[a] === casas[c]) {
+                anunciaGanhador();
+                return;
+            }
+        }
+
+        if (casas.every(casa => casa)) {
+            document.querySelector("#mensagens").innerText = "Empate!";
+            return;
+        }
+
+        trocaJogador();
+
+    }
+
+    const anunciaGanhador = () => {
+        document.querySelector("#mensagens").innerText = `O vencedor foi: ${jogador}`;
+        paraJogo();
+    };
+
+    const paraJogo = () => {
+        for (let i = 1; i <= 9; i++) {
+            desativaCasa(`casa-${i}`);
+        }
+
+        alteraVisibilidadeReiniciar();
+    };
+
+    const alteraVisibilidadeReiniciar = () =>{
+        const botaoReiniciar = document.querySelector("#btn-restart");
+
+        botaoReiniciar.style.visibility = botaoReiniciar.style.visibility == "visible" ? 'hidden' : 'visible';
+    }
+
+    const reiniciarJogo = () => {
+        jogador = "X";
+
+        for (let i = 1; i <= 9; i++) {
+            ativaCasa(`casa-${i}`);
+        }
+
+        alteraVisibilidadeReiniciar();
+
+        mostraJogador();
+    }
+
+</script>
+</html>
