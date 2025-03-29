@@ -204,6 +204,7 @@
 
         if (casas.every(casa => casa)) {
             document.querySelector("#mensagens").innerText = "Empate!";
+            alteraVisibilidadeReiniciar();
             return;
         }
 
@@ -212,7 +213,7 @@
     }
 
     const anunciaGanhador = () => {
-        document.querySelector("#mensagens").innerText = `O vencedor foi: ${jogador}`;
+        document.querySelector("#mensagens").style.visibility = `hidden`;
         Toastify({
             text: `O vencedor foi: ${jogador}`,
             duration: 3000,
@@ -246,6 +247,7 @@
 
         alteraVisibilidadeReiniciar();
 
+        document.querySelector("#mensagens").style.visibility = `visible`;
         mostraJogador();
     }
 
